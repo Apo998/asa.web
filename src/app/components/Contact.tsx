@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { supabase } from "../../lib/supabaseClient";
 import emailjs from "@emailjs/browser";
 
 export function Contact() {
@@ -44,14 +43,7 @@ export function Contact() {
                     message: formData.message.trim(),
                 };
 
-                // 1. Insert into Supabase
-                const { error: supabaseError } = await supabase
-                    .from('contacts')
-                    .insert([securePayload]);
-
-                if (supabaseError) throw supabaseError;
-
-                // 2. Send email via EmailJS
+                // Send email via EmailJS
                 await emailjs.send(
                     import.meta.env.VITE_EMAILJS_SERVICE_ID,
                     import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
